@@ -75,6 +75,7 @@ const OrderBook = () => {
       event: 'unsubscribe',
       channel: Channel,
       subId: 123,
+      symbol: Symbol,
     };
     sendJsonMessage(message);
   };

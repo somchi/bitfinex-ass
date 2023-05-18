@@ -47,12 +47,12 @@ export const bitSlice = createSlice({
     },
     setBitAsks: (state: AppStore, actions: PayloadAction<any[]>) => {
       const currAsks = actions.payload;
-      const updateAsks = compareBitOrders(current(state.asks), currAsks);
+      const updateAsks = compareBitOrders(current(state).asks, currAsks);
       const asks = addTotalToOrder(updateAsks);
 
       const max = getMaxTotalSum(asks);
       state.maxTotalAsks = max;
-      const askDepth = addDepths(asks, current(state).maxTotalAsks);
+      const askDepth = addDepths(asks, max);
       state.asks = askDepth;
     },
     setLoading: (state: AppStore, actions: PayloadAction<boolean>) => {

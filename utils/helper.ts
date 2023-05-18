@@ -1,3 +1,4 @@
+import { ORDERBOOK_LEVELS } from './constants';
 import { Order } from './types';
 
 export const generateUrl = (baseUrl: string, params: any) => {
@@ -74,19 +75,15 @@ export const addTotalToOrder = (
   orders: Order[] | { price: number; amount: number }[]
 ) => {
   const totals: number[] = [];
-  return orders.map((order: any, index: number) => {
+  const i = orders.map((order: any, index: number) => {
     const amount: number = order.amount;
-    if (order.total !== undefined && Number.isNaN(order.total)) {
-      totals.push(order.total);
-      return order;
-    } else {
-      const updatedOrder = { ...order };
-      const total: number = index === 0 ? amount : amount + totals[index - 1];
-      updatedOrder.total = total;
-      totals.push(total);
-      return updatedOrder;
-    }
+    const updatedOrder = { ...order };
+    const total: number = index === 0 ? amount : amount + totals[index - 1];
+    updatedOrder.total = total;
+    totals.push(total);
+    return updatedOrder;
   });
+  return i;
 };
 
 export const formatNum = (value: number) => {
@@ -130,26 +127,28 @@ export const formatBitDataOne = (data: any[]) => {
 
 export const compareBitOrders = (currentOrders: any[], orders: any[]) => {
   let updatedOrder: any[] = currentOrders;
+
   orders.forEach((order) => {
     const orderPrice = order.price;
     const orderCount = order.count;
-    if (orderCount !== 0) {
-      if (currentOrders.some((currOrder) => currOrder.price === orderPrice)) {
-        updatedOrder = [...updatedOrder].map((updateOrder) => {
-          if (updateOrder.price === order.price) {
-            updateOrder = order;
-          }
-          return updateOrder;
-        });
-      } else {
-        if (updatedOrder.length) {
-          updatedOrder = [...updatedOrder, order];
-        }
-      }
-    } else {
+
+    if (orderCount === 0) {
       updatedOrder = [...updatedOrder].filter(
         (orderLevel) => orderLevel.price !== orderPrice
       );
+    } else {
+      if (currentOrders.find((currOrder) => currOrder.price === orderPrice)) {
+        updatedOrder = [...updatedOrder].map((update) => {
+          if (update.price === order.price) {
+            update = order;
+          }
+          return update;
+        });
+      } else {
+        // if (updatedOrder.length < ORDERBOOK_LEVELS) {
+        updatedOrder = [...updatedOrder, order];
+        // }
+      }
     }
   });
   return updatedOrder;
