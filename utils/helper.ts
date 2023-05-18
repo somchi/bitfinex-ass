@@ -161,13 +161,9 @@ export const getMaxTotalSum = (orders: any[]) => {
 
 export const addDepths = (orders: any[], maxTotal: number) => {
   return orders.map((order: any) => {
-    if (typeof order.depth !== 'undefined' && !Number.isNaN(order.total)) {
-      return order;
-    } else {
-      const calculatedTotal: number = order.total;
-      const depth = (calculatedTotal / maxTotal) * 100;
-      const updatedOrder = { ...order, depth };
-      return updatedOrder;
-    }
+    const calculatedTotal: number = order.total;
+    const depth = (calculatedTotal / maxTotal) * 100;
+    const updatedOrder = { ...order, depth };
+    return updatedOrder;
   });
 };

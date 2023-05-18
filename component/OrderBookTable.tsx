@@ -47,9 +47,9 @@ export const OrderBookTable = memo(function OrderBookTable({
           ></View>
           {orderType === ORDER_TYPE.BID ? (
             <View style={{ ...styles.orderRow }}>
-              <Text style={styles.orderRowData}>{formatNum(item.total)}</Text>
+              <Text style={styles.orderRowData}>{formatNum(item.amount)}</Text>
               <Text style={{ ...styles.orderRowData, textAlign: 'left' }}>
-                {formatNum(item.amount)}
+                {formatNum(item.price)}
               </Text>
             </View>
           ) : (
@@ -66,8 +66,8 @@ export const OrderBookTable = memo(function OrderBookTable({
   const tableHeader = () => {
     return orderType === ORDER_TYPE.BID ? (
       <View style={styles.tableHeader}>
-        <Text style={styles.tableTh}>Total</Text>
-        <Text style={styles.tableTh}>Amount</Text>
+        <Text style={styles.tableTh}>AMOUNT</Text>
+        <Text style={styles.tableTh}>PRICE</Text>
       </View>
     ) : (
       <View style={{ marginLeft: 5, ...styles.tableHeader }}>
